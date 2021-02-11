@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 [RequireComponent(typeof(Rigidbody2D))]
 [RequireComponent(typeof(Animator))]
+[RequireComponent(typeof(SpriteRenderer))]
 public class PlayerMove : MonoBehaviour
 {
     //Vars/Comps
      Rigidbody2D rb;
      Animator anim;
+    SpriteRenderer playerSprite;
     public float speed;
     public int jumpForce;
     public bool isGrounded;
@@ -17,12 +19,16 @@ public class PlayerMove : MonoBehaviour
     private bool isShooting;
     private bool isUp;
     private bool isDown;
+    private bool isRight = true;
+    public PowerUp powerUp;
+
 
     // Start is called before the first frame update
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
+        playerSprite = GetComponent<SpriteRenderer>();
         if (speed <= 0)
         {
             speed = 5.0f;
@@ -64,16 +70,12 @@ public class PlayerMove : MonoBehaviour
         rb.velocity = new Vector2(horizontalInput * speed, rb.velocity.y);
 
         //Flip Animation, 
-        if (Input.GetKeyDown (KeyCode.A) || Input.GetKeyDown (KeyCode.LeftArrow))
+        if (playerSprite.flipX && horizontalInput > 0 || !playerSprite.flipX && horizontalInput < 0)
         {
 
-            transform.eulerAngles = new Vector3(0, 180, 0);
+            playerSprite.flipX = !playerSprite.flipX;
 
-        }
-        if (Input.GetKeyUp(KeyCode.A) || Input.GetKeyDown(KeyCode.RightArrow))
-        {
 
-            transform.eulerAngles = new Vector3(0, 0, 0);
 
         }
         //Shooting animation,
@@ -120,6 +122,9 @@ public class PlayerMove : MonoBehaviour
             anim.SetBool("IsDown", isDown);
 
         }
-
+       
     }
+
+   
+
 }
