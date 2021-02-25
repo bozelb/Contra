@@ -11,7 +11,8 @@ GameObject:
   - component: {fileID: 6363999519082304361}
   - component: {fileID: 3505470680737430732}
   - component: {fileID: 555256780647162724}
-  - component: {fileID: 1302619073423276128}
+  - component: {fileID: -4394784249321205055}
+  - component: {fileID: 3600306391196537155}
   m_Layer: 3
   m_Name: MachineGunPowerUp
   m_TagString: Untagged
@@ -110,7 +111,7 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.48, y: 0.3}
   m_EdgeRadius: 0
---- !u!114 &1302619073423276128
+--- !u!114 &-4394784249321205055
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -119,6 +120,21 @@ MonoBehaviour:
   m_GameObject: {fileID: 26590927272716744}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1224a10cd6de04e4d8aaf218c97a7fa3, type: 3}
+  m_Script: {fileID: 11500000, guid: 61414c873e512b8439640e35fc431a14, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fire: {fileID: 0}
+  timer: {fileID: 0}
+  currentPowerUp: 0
+--- !u!114 &3600306391196537155
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 26590927272716744}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2b757f4ca2479dd45bc5fba3ba36d9f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 

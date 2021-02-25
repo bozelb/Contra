@@ -26,12 +26,11 @@ public class Projectile : MonoBehaviour
     {
         if(collision.gameObject.tag == "Enviro")
         {
-            Debug.Log("farts");
             Destroy(this.gameObject);
         }
     }
     //Have it destroy if hits anything but player, Since it'll never hit player this should work
 
-
+   
 
 }

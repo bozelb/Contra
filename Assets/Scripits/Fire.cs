@@ -10,13 +10,15 @@ public class Fire : MonoBehaviour
     public Transform spawnLeft;
     public float projectileSpeed;
     public Projectile projectilePrefab;
-
+    public bool machineGunPower = false;
+    public PlayerMove timer;
 
     // Start is called before the first frame update
     void Start()
     {
         player = GetComponent<SpriteRenderer>();
         GetComponent<BoxCollider2D>();
+        timer = GameObject.FindObjectOfType<PlayerMove>();
         if (!spawnRight || !spawnLeft || !projectilePrefab)
         {
 
@@ -28,11 +30,7 @@ public class Fire : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetButtonDown("Fire1"))
-        {
-            FireProjectile();
-            Debug.Log("is fire");
-        }
+        ShootController();
     }
     void FireProjectile()
     {
@@ -49,8 +47,28 @@ public class Fire : MonoBehaviour
             projectileInstance.speed = projectileSpeed;
         }
     }
-   
+    public void ShootController()
+    {
 
+        if (machineGunPower == true)
+        {
+
+            if (Input.GetButton("Fire1"))
+            {
+                
+                FireProjectile();
+                
+            }
+        }
+        else if (machineGunPower == false)
+        {
+            if(Input.GetButtonDown("Fire1")){
+                FireProjectile();
+                
+            }
+        }
+    }
+    
 }
 
 

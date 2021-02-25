@@ -7,8 +7,8 @@ using UnityEngine;
 public class PlayerMove : MonoBehaviour
 {
     //Vars/Comps
-     Rigidbody2D rb;
-     Animator anim;
+    Rigidbody2D rb;
+    Animator anim;
     SpriteRenderer playerSprite;
     public float speed;
     public int jumpForce;
@@ -21,11 +21,65 @@ public class PlayerMove : MonoBehaviour
     private bool isDown;
     private bool isRight = true;
     public PowerUp powerUp;
+    public Fire fire;
+    int _score = 0;
+    public int score
+    {
+        get { return _score; }
+        set
+        {
 
+            _score = value;
+            Debug.Log("Current Score is " + _score);
+        }
+
+    }
+
+    public int maxLives = 3;
+    int _lives = 3;
+    public int lives
+    {
+        get { return _lives; }
+        set
+        {
+            _lives = value;
+            if (_lives > maxLives)
+                _lives = maxLives;
+            else if (_lives < 0)
+            {
+                //Run game over code here
+            }
+            Debug.Log("Current lives are " + _lives);
+        }
+    }
+    IEnumerator PowerUpTimer()
+    {
+        Debug.Log("Machine Gun Timer Started");
+        fire.machineGunPower = true;
+        yield return new WaitForSecondsRealtime(5.0f);
+        fire.machineGunPower = false;
+        Debug.Log("Machine Gun Timer stopped");
+    }
+    IEnumerator BulletTimer()
+    {
+
+        yield return new WaitForSecondsRealtime(1.0f);
+    }
+    public void PowerupTimer()
+    {
+        StartCoroutine(PowerUpTimer());
+    }
+    public void Bullet_Timer()
+    {
+        StartCoroutine(BulletTimer());
+    }
 
     // Start is called before the first frame update
     void Start()
     {
+        fire = GameObject.FindObjectOfType<Fire>();
+
+
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
         playerSprite = GetComponent<SpriteRenderer>();
@@ -93,7 +147,7 @@ public class PlayerMove : MonoBehaviour
 
         }
         //Shooting Up,
-        if(Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow) && isGrounded)
+        if(Input.GetKeyDown(KeyCode.W) && Input.GetKeyDown(KeyCode.UpArrow) && isGrounded)
         {
 
             isUp = true;
