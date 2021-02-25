@@ -22,7 +22,7 @@ public class MachineGunPowerUp : MonoBehaviour
         if(MGisOn == true)
         {
 
-            Debug.Log("is working");
+            Debug.Log("This is working");
         }
        
     }
