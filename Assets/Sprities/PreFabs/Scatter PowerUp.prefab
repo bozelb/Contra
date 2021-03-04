@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 3293636189583099515}
   - component: {fileID: 8046000454482476311}
   - component: {fileID: -2299907676117295895}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Scatter PowerUp
   m_TagString: Untagged
   m_Icon: {fileID: 0}

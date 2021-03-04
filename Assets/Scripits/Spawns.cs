@@ -7,10 +7,9 @@ public class Spawns : MonoBehaviour
     [SerializeField]
     private GameObject powerUpPreFab;
     [SerializeField]
-    private int howManySpawnPoints = 0;
+    private int howManySpawnPoints = 5;
     public GameObject[] spawnPoint;
-    private int oldNumber;
-    int[] r = new int[9];
+    int[] r;
     // Start is called before the first frame update
     void Start()
     {
@@ -20,23 +19,14 @@ public class Spawns : MonoBehaviour
     }
     void SpawnPowerUp()
     {
-
-        for (int i = 0; i <= 4; i++)
+        for (int k = 0; k < 4; k++)
         {
-            /*   r[i] = Random.Range(0, 9);
-              if(r[i] == oldNumber)
-              {
-                  r[i] = Random.Range(0, 9);
-              }
-              oldNumber = r[i];*/
-            int r = i;
-            Instantiate(powerUpPreFab, spawnPoint[r].transform.position, spawnPoint[r].
+            Instantiate(powerUpPreFab, spawnPoint[k].transform.position, spawnPoint[k].
             transform.rotation);
-
-        }
+        }   
+    
     }
    
- 
         
         
 

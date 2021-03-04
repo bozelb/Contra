@@ -7,6 +7,13 @@ TagManager:
   - Projectile
   - PowerUp
   - Enviro
+  - Head
+  - Enemy
+  - Barrier
+  - EnemyProjectile
+  - EnemyTurret
+  - TurretRaduis
+  - Direction
   layers:
   - Default
   - TransparentFX
@@ -16,8 +23,8 @@ TagManager:
   - UI
   - Player
   - Projectile
-  - 
-  - 
+  - Powerups
+  - Enemy
   - 
   - 
   - 

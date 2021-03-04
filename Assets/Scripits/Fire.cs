@@ -12,6 +12,9 @@ public class Fire : MonoBehaviour
     public Projectile projectilePrefab;
     public bool machineGunPower = false;
     public PlayerMove timer;
+    public float projectileFireRate;
+    float timeSincelastFired = 0.0f;
+
 
     // Start is called before the first frame update
     void Start()
@@ -36,6 +39,7 @@ public class Fire : MonoBehaviour
     {
         // Create bullet and have it flip depending on which way player facing
         if(player.flipX)
+
         {
             // * by -1 to have it to flip direction
             Projectile projectileInstance = Instantiate(projectilePrefab, spawnLeft.position, spawnLeft.rotation);
@@ -55,9 +59,24 @@ public class Fire : MonoBehaviour
 
             if (Input.GetButton("Fire1"))
             {
-                
-                FireProjectile();
-                
+                if (Time.time >= timeSincelastFired + projectileFireRate)
+                {
+                    timeSincelastFired = Time.time;
+
+
+                    if (player.flipX)
+                    {
+                        // * by -1 to have it to flip direction
+                        Projectile projectileInstance = Instantiate(projectilePrefab, spawnLeft.position, spawnLeft.rotation);
+                        projectileInstance.speed = projectileSpeed * -1;
+                    }
+                    else
+                    {
+                        Projectile projectileInstance = Instantiate(projectilePrefab, spawnRight.position, spawnRight.rotation);
+                        projectileInstance.speed = projectileSpeed;
+                    }
+                }
+
             }
         }
         else if (machineGunPower == false)

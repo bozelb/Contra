@@ -24,13 +24,24 @@ public class Projectile : MonoBehaviour
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.gameObject.tag == "Enviro")
+        if(collision.gameObject.layer == 3 || collision.gameObject.layer == 8)
         {
             Destroy(this.gameObject);
         }
+        if(collision.gameObject.tag == "Enemy")
+        {
+            collision.gameObject.GetComponent<Walker>().isDead();
+            Destroy(this.gameObject);
+        }
+        if (collision.gameObject.tag == "EnemyTurret")
+        {
+            collision.gameObject.GetComponent<Turret>().isDead();
+            Destroy(this.gameObject);
+        }
+
     }
     //Have it destroy if hits anything but player, Since it'll never hit player this should work
-
+    
    
 
 }

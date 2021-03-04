@@ -12,7 +12,7 @@ public class LifePowerUp : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.tag == "Player")
+        if (collision.gameObject.tag == "Player" || collision.gameObject.tag == "Projectile")
             Destroy(this.gameObject);
     }
     private void OnDestroy()
