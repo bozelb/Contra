@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class EnemyProjectile : MonoBehaviour
 {
+    public PlayerMove player;
 
     public float speed = 7.0f;
     public float lifeTime;
@@ -13,6 +14,7 @@ public class EnemyProjectile : MonoBehaviour
     {
         GetComponent<Rigidbody2D>().velocity = new Vector2(speed, 0);
         GetComponent<BoxCollider2D>();
+        player = GameObject.FindObjectOfType<PlayerMove>();
         Destroy(gameObject, lifeTime);
 
 
@@ -26,6 +28,7 @@ public class EnemyProjectile : MonoBehaviour
 
         if(collision.gameObject.tag == "Player")
         {
+            collision.gameObject.GetComponentInParent<PlayerMove>().subtract_Lives();
             Destroy(this.gameObject);
         }
 

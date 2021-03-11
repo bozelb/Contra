@@ -23,6 +23,7 @@ public class PlayerMove : MonoBehaviour
     public PowerUp powerUp;
     public Fire fire;
     int _score = 0;
+    public GameManager game;
     public int score
     {
         get { return _score; }
@@ -45,12 +46,14 @@ public class PlayerMove : MonoBehaviour
             _lives = value;
             if (_lives > maxLives)
                 _lives = maxLives;
-            else if (_lives < 0)
-            {
-                //Run game over code here
-            }
-            Debug.Log("Current lives are " + _lives);
         }
+    }
+    public void subtract_Lives()
+    {
+
+       _lives =  _lives - 1;
+        Debug.Log("Current lives are " + _lives);
+
     }
     IEnumerator PowerUpTimer()
     {
@@ -78,7 +81,7 @@ public class PlayerMove : MonoBehaviour
     void Start()
     {
         fire = GameObject.FindObjectOfType<Fire>();
-
+        game = GameObject.FindObjectOfType<GameManager>();
 
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
@@ -111,6 +114,11 @@ public class PlayerMove : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+         if (_lives <= 0)
+        {
+            game.Go_To_GameOver();
+            Debug.Log("Current lives are " + _lives);
+        }
         float horizontalInput = Input.GetAxis("Horizontal");
         anim.SetFloat("speed", Mathf.Abs(horizontalInput));
         anim.SetBool("isGrounded", isGrounded);
