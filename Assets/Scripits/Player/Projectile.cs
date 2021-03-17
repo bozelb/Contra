@@ -9,10 +9,12 @@ public class Projectile : MonoBehaviour
     public float speed = 7.0f;
     public float lifeTime;
 
+    public Vector2 projectileVector;
+
     // Start is called before the first frame update
     void Start()
     {
-        GetComponent<Rigidbody2D>().velocity = new Vector2(speed,0);
+        GetComponent<Rigidbody2D>().velocity = projectileVector * speed;
         GetComponent<BoxCollider2D>();
         Destroy(gameObject, lifeTime);
        
@@ -24,7 +26,7 @@ public class Projectile : MonoBehaviour
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.gameObject.layer == 3 || collision.gameObject.layer == 8)
+        if(collision.gameObject.layer == 10 || collision.gameObject.layer == 8)
         {
             Destroy(this.gameObject);
         }

@@ -51,8 +51,8 @@ public class PlayerCollision : MonoBehaviour
             turret.inDistance = true;
 
         }
-        if (collision.gameObject.tag == "Direction")
-            collision.gameObject.GetComponentInParent<Turret>().flip();
+       // if (collision.gameObject.tag == "Direction")
+           // collision.gameObject.GetComponentInParent<Turret>().flip();
 
     }
    

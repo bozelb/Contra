@@ -4,11 +4,17 @@ using UnityEngine;
 
 public class MachineGun : MonoBehaviour
 {
+    public Fire fire;
+
+    private void Start()
+    {
+        fire = GameObject.FindObjectOfType<Fire>();
+    }
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.tag == "Player" || (collision.gameObject.tag == "Projectile"))
+        if (collision.gameObject.tag == "Player")
         {
-
+           // fire.machineGunPower = true;
             Destroy(this.gameObject);
         }
     }

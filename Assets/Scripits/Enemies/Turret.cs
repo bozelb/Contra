@@ -6,30 +6,32 @@ using UnityEngine;
 [RequireComponent(typeof(SpriteRenderer))]
 public class Turret : MonoBehaviour
 {
-    public Transform SpawnPoint;
-    public Transform SpawnPoint2;
-    public EnemyProjectile enemyProjectilePreFab;
-    public Transform Player;
+    public Transform SpawnPoint; //Where the projectile will spawn
+    public EnemyProjectile enemyProjectilePreFab; //What will spawn
+    public Transform Player;//To get the position of the player 
+    public float turnSpeed = 1.0f;//How quickly the turret will move
 
-    public float projectileForce;
-    public float projectileFireRate = 2;
+    public float projectileForce = 5.0f;//How fast it will go
+    public float projectileFireRate = 2;//Time in between shots
 
-    float timeSincelastFired;
-    public int health;
+    float timeSincelastFired;//To track time since last fire, used later to make sure
+    //It fires in the right time frame
 
-    public bool inDistance;
-    
+    public int health;//how much damage it can take
+
+    public bool inDistance;//Is it in the triggerBox to start shooting
+
 
     Animator anim;
     SpriteRenderer sprite;
     // Start is called before the first frame update
     void Start()
     {
+        //Get animation for death and for sprite
         anim = GetComponent<Animator>();
         sprite = GetComponent<SpriteRenderer>();
-        if (projectileForce <= 0)
-            projectileForce = 7.0f;
-
+        
+        //Fail safe incase the computer doesnt want to compute
         if (health <= 0)
             health = 5;
     }
@@ -37,43 +39,57 @@ public class Turret : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //Get the position of the spawned playerprefab
+        Player = GameObject.FindObjectOfType<CameraFollow>().Player.transform;
+        //Is in distance? Then shoot & trigger rotation of turret
         if (inDistance == true)
         {
-           
+            RotateTowards(Player.position);
+            //Setting the fire rate & set the spawn point for firing
             if (Time.time >= timeSincelastFired + projectileFireRate)
             {
+                SpawnPointFire(Player.position);
                 timeSincelastFired = Time.time;
                 Fire();
             }
         }
-        
+
     }
+
+    //Fire function, basically will spawn the projectile
     public void Fire()
-    {
-        
-        if (sprite.flipX)
-        {
-            Debug.Log("Turret fire");
-            EnemyProjectile temp = Instantiate(enemyProjectilePreFab, SpawnPoint2.position, SpawnPoint2.rotation);
-            temp.speed = projectileForce;
-        }
-        else
-        {
-            
-            EnemyProjectile temp = Instantiate(enemyProjectilePreFab, SpawnPoint.position, SpawnPoint.rotation);
-            temp.speed = projectileForce * -1;
-        }
+    { 
+        EnemyProjectile temp = Instantiate(enemyProjectilePreFab, SpawnPoint.position, SpawnPoint.rotation);
+        temp.speed = projectileForce;
     }
+    //Blow UP!!!
     public void isDead()
     {
         anim.SetBool("Death", true);
     }
+    //Destroy object, done in animation as event/Add 10 to score
     public void finishDeath()
     {
+        GameManager.instance.score = GameManager.instance.score + 10;
         Destroy(this.gameObject);
     }
-    public void flip()
+    //Rotating function for turret, called when in distance is true
+    public void RotateTowards(Vector2 Player)
     {
-        sprite.flipX = !sprite.flipX;
+
+        var offset = 180;
+        Vector2 direction = Player - (Vector2)transform.position;
+        direction.Normalize();
+        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+        transform.rotation = Quaternion.Euler(Vector3.forward * (angle + offset));
     }
-}  
+    //Projectile spawn point, so it matches the turret rotation 
+    public void SpawnPointFire(Vector2 Player)
+    {
+        Vector2 direction1 = Player - (Vector2)SpawnPoint.position;
+        direction1.Normalize();
+        enemyProjectilePreFab.projectileVector = direction1;
+        //^^ Gets the vector enemyProjectile and makes it equal the unit vector direction1,
+        //so when it fires it goes in the right direction
+    }
+}

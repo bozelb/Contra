@@ -36,7 +36,6 @@ public class TypeOfPowerUp : MonoBehaviour
                         // When player hits powerUps its starts timer 
                         // and will destory obj
                         // Timer is located in player move 
-                        timer.PowerupTimer();
                         Destroy(gameObject);
                         Debug.Log("MachineGun");
                         break;
@@ -49,7 +48,7 @@ public class TypeOfPowerUp : MonoBehaviour
                     Debug.Log("Armor");
                     break;
                 case PowerUpType.LIVES:
-                    timer.lives++;
+                    //timer.lives++;
                     Destroy(gameObject);
                     Debug.Log("Lives");
                     break;

@@ -17,7 +17,7 @@ public class LifePowerUp : MonoBehaviour
     }
     private void OnDestroy()
     {
-        lives.lives++;
+        //lives.lives++;
     }
 
 

@@ -24,18 +24,8 @@ public class PlayerMove : MonoBehaviour
     public Fire fire;
     int _score = 0;
     public GameManager game;
-    public int score
-    {
-        get { return _score; }
-        set
-        {
-
-            _score = value;
-            Debug.Log("Current Score is " + _score);
-        }
-
-    }
-
+ 
+    /*
     public int maxLives = 3;
     int _lives = 3;
     public int lives
@@ -55,28 +45,7 @@ public class PlayerMove : MonoBehaviour
         Debug.Log("Current lives are " + _lives);
 
     }
-    IEnumerator PowerUpTimer()
-    {
-        Debug.Log("Machine Gun Timer Started");
-        fire.machineGunPower = true;
-        yield return new WaitForSecondsRealtime(5.0f);
-        fire.machineGunPower = false;
-        Debug.Log("Machine Gun Timer stopped");
-    }
-    IEnumerator BulletTimer()
-    {
-
-        yield return new WaitForSecondsRealtime(1.0f);
-    }
-    public void PowerupTimer()
-    {
-        StartCoroutine(PowerUpTimer());
-    }
-    public void Bullet_Timer()
-    {
-        StartCoroutine(BulletTimer());
-    }
-
+    */
     // Start is called before the first frame update
     void Start()
     {
@@ -114,11 +83,11 @@ public class PlayerMove : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-         if (_lives <= 0)
+        /* if (_lives <= 0)
         {
             game.Go_To_GameOver();
             Debug.Log("Current lives are " + _lives);
-        }
+        }*/
         float horizontalInput = Input.GetAxis("Horizontal");
         anim.SetFloat("speed", Mathf.Abs(horizontalInput));
         anim.SetBool("isGrounded", isGrounded);

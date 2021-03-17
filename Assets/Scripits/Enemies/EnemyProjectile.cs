@@ -4,20 +4,24 @@ using UnityEngine;
 
 public class EnemyProjectile : MonoBehaviour
 {
-    public PlayerMove player;
+    //Getting Scripts to use their vars
+    public GameManager manager;
+    public Turret turret;
 
-    public float speed = 7.0f;
-    public float lifeTime;
+    //Setting speed and Vectors
+    public float speed = 4.0f;
+    public Vector2 projectileVector; //This vector is set in Turret script in function SpawnPointFire
+    public float lifeTime;//How long to exisit
 
     // Start is called before the first frame update
-    void Start()
-    {
-        GetComponent<Rigidbody2D>().velocity = new Vector2(speed, 0);
+    void Start()    
+    {   //Setting the force on the rb so it goes fast like Sonic
+        GetComponent<Rigidbody2D>().velocity = projectileVector * speed;
+        //Just getting componets
         GetComponent<BoxCollider2D>();
-        player = GameObject.FindObjectOfType<PlayerMove>();
         Destroy(gameObject, lifeTime);
-
-
+        manager = GameObject.FindObjectOfType<GameManager>();
+        //Fail Safe, for lifetime
         if (lifeTime <= 0)
         {
             lifeTime = 2.0f;
@@ -25,16 +29,13 @@ public class EnemyProjectile : MonoBehaviour
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
-
+        //Make the player Take damage on Hit, references GameManger subtract lives
         if(collision.gameObject.tag == "Player")
         {
-            collision.gameObject.GetComponentInParent<PlayerMove>().subtract_Lives();
+            manager.subtract_Lives();
             Destroy(this.gameObject);
         }
-
     }
-  
-
 }
 
 

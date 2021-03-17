@@ -18,9 +18,10 @@ public class PowerUp : MonoBehaviour
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.tag == "Player" || (collision.gameObject.tag == "Projectile"))
+        if (collision.gameObject.tag == "Projectile")
         {
             PowerUpDecider();
+            GameManager.instance.score = GameManager.instance.score + 5;
             Destroy(this.gameObject);
         }
     }

@@ -11,6 +11,8 @@ public class Walker : MonoBehaviour
     SpriteRenderer spriteRender;
     Animator anim;
 
+    
+
     public int health = 3;
     public float speed;
 
@@ -71,6 +73,7 @@ public class Walker : MonoBehaviour
     }
     public void finishedDeath()
     {
+        GameManager.instance.score = GameManager.instance.score + 10;
         Destroy(this.gameObject);
     }
 }
