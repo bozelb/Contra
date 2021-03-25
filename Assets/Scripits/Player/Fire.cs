@@ -5,27 +5,42 @@ using UnityEngine;
 [RequireComponent(typeof(SpriteRenderer))]
 public class Fire : MonoBehaviour
 {
-    SpriteRenderer player;
+    //Transform for spawn points and unit vectors for projectile
+    [Header("Transform")]
     public Transform spawnRight;
-    public Transform spawnLeft;
+    public Transform target;
+
+    //Timer for how long powerups will stay
+    [Header("Ref to other scripts")]
+    public PlayerMove timer;
+   
+
+    //Projectile 
+    [Header("Projectile properties")]
     public float projectileSpeed = 7.0f;
     public Projectile projectilePrefab;
-    public bool machineGunPower = false;
-    public PlayerMove timer;
     public float projectileFireRate = 5.0f;
-   
+
+    //Powerup bools, to dictate whether they are on or not
+    [Header("Bools for powerups")]
+    public bool machineGunPower = false;
     bool cannotShoot = false;
-    public Transform target;
-    Vector2 scatter;
     bool defaultShoot = true;
+   public bool scatterShoot = false;
+
+    //Audio
+    [Header("Audio")]
+    AudioSource shootAudio;
+    public AudioClip shootSFX;
+
 
     // Start is called before the first frame update
     void Start()
     {
-        player = GetComponent<SpriteRenderer>();
+        //Get compoents
         GetComponent<BoxCollider2D>();
         timer = GameObject.FindObjectOfType<PlayerMove>();
-        if (!spawnRight || !spawnLeft || !projectilePrefab)
+        if (!spawnRight || !projectilePrefab)
         {
 
             Debug.Log("Unity Inspector value not set");
@@ -36,26 +51,41 @@ public class Fire : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //Find the target every frame so the bullets go the right way
         target = GameObject.FindObjectOfType<CrossHair>().transform;
-
-        if(defaultShoot == true)
+       
+        //DefaultShoot to stop other powerup
+       if(defaultShoot == true)
         ShootController(target.position);
+
         if (machineGunPower == true)
         {
             defaultShoot = false;
+            scatterShoot = false;
             StartCoroutine(PowerUpTimer());
             MachineGun(target.position);
         }
-        //ScatterGun();
+
+        if (scatterShoot == true)
+        {
+            defaultShoot = false;
+            machineGunPower = false;
+            StartCoroutine(PowerUpTimer());
+            ScatterGun(target.position);
+        }
     }
     public void ShootController(Vector2 target)
     {
+       
+
+
         Vector2 direction1 = target - (Vector2)transform.position;
         direction1.y = direction1.y - 0.75f;
         direction1.Normalize();
         projectilePrefab.projectileVector = direction1;
         if (Input.GetButtonDown("Fire1"))
         {
+            playShootSound();
             Projectile projectileInstance = Instantiate(projectilePrefab, spawnRight.position, spawnRight.rotation);
             projectileInstance.speed = projectileSpeed;
         }
@@ -63,6 +93,7 @@ public class Fire : MonoBehaviour
     }
     public void MachineGun(Vector2 target)
     {
+        
         Vector2 direction1 = target - (Vector2)transform.position;
         direction1.y = direction1.y - 0.75f;
         direction1.Normalize();
@@ -71,6 +102,7 @@ public class Fire : MonoBehaviour
         {
             if (cannotShoot == false)
             {
+                playShootSound();
                 cannotShoot = true;
                 StartCoroutine(ShootDelay());
                 Projectile projectileInstance = Instantiate(projectilePrefab, spawnRight.position, spawnRight.rotation);
@@ -94,41 +126,49 @@ public class Fire : MonoBehaviour
     }
 
 
-    public void ScatterGun()
+    public void ScatterGun(Vector2 target)
     {
         if (Input.GetButtonDown("Fire1"))
         {
-            for (int i = 1; i <= 4; i++)
-            {
-                switch (i)
-                {
-                    case 1:
-                        scatter = new Vector2(0.0f, 0.5f);
-                        projectilePrefab.projectileVector = scatter;
-                        Projectile projectileInstance = Instantiate(projectilePrefab, spawnRight.position, spawnRight.rotation);
-                        projectileInstance.speed = projectileSpeed;
-                        break;
-                    case 2:
-                        scatter = new Vector2(4.0f, 0.5f);
-                        projectilePrefab.projectileVector = scatter;
-                        Instantiate(projectilePrefab, spawnRight.position, spawnRight.rotation);
-                        break;
-                    case 3:
-                        scatter = new Vector2(6.0f, 0.5f);
-                        projectilePrefab.projectileVector = scatter;
-                        Instantiate(projectilePrefab, spawnRight.position, spawnRight.rotation);
-                        break;
-                    case 4:
-                        scatter = new Vector2(-0.0f, 0.5f);
-                        projectilePrefab.projectileVector = scatter;
-                        Instantiate(projectilePrefab, spawnRight.position, spawnRight.rotation);
-                        break;
+            playShootSound();
 
-                }
+            //Get unit vector
+            Vector2 scatter1 = target - (Vector2)transform.position;
+            scatter1.Normalize();
+            projectilePrefab.projectileVector = scatter1;
+           
 
-            }
+            //Create projectile,
+            Projectile projectileInstance = Instantiate(projectilePrefab, spawnRight.position, spawnRight.rotation);
+            projectileInstance.speed = projectileSpeed;
+
+            //Get unit vector
+            Vector2 scatter2 = target - (Vector2)transform.position;
+            scatter2.y = scatter2.y - 0.35f;
+            scatter2.Normalize();
+            projectilePrefab.projectileVector = scatter2;
+           //Find two angles,
+
+            //Create projectile,
+            projectileInstance = Instantiate(projectilePrefab, spawnRight.position, spawnRight.rotation);
+            projectileInstance.speed = projectileSpeed;
+
+
         }
 
+    }
+
+    public void playShootSound()
+    {
+        if (!shootAudio)
+        {
+            shootAudio = this.gameObject.AddComponent<AudioSource>();
+            shootAudio.clip = shootSFX;
+            shootAudio.loop = false;
+            shootAudio.Play();
+        }
+        else
+            shootAudio.Play();
     }
     
 }

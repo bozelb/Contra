@@ -4,17 +4,17 @@ using UnityEngine;
 
 public class MachineGun : MonoBehaviour
 {
+    //Get access to Fire to change projectile 
     public Fire fire;
 
-    private void Start()
-    {
-        fire = GameObject.FindObjectOfType<Fire>();
-    }
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        
+
         if (collision.gameObject.tag == "Player")
         {
-           // fire.machineGunPower = true;
+            fire = collision.gameObject.GetComponent<Fire>();
+            fire.machineGunPower = true;
             Destroy(this.gameObject);
         }
     }

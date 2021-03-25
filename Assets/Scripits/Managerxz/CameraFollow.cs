@@ -6,6 +6,7 @@ public class CameraFollow : MonoBehaviour
 {
     
     public GameObject Player;
+  
     // Update is called once per frame
     void Update()
     {
@@ -20,6 +21,7 @@ public class CameraFollow : MonoBehaviour
         }
      
     }
+
 
     }
 

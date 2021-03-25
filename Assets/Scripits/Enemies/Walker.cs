@@ -10,7 +10,11 @@ public class Walker : MonoBehaviour
     Rigidbody2D rb;
     SpriteRenderer spriteRender;
     Animator anim;
+    BoxCollider2D boxCollider;
 
+    AudioSource audio;
+    public AudioClip deathSFX;
+    public AudioClip splatSFX;
     
 
     public int health = 3;
@@ -24,6 +28,7 @@ public class Walker : MonoBehaviour
        rb =  GetComponent<Rigidbody2D>();
         spriteRender = GetComponent<SpriteRenderer>();
         anim = GetComponent<Animator>();
+        boxCollider = GetComponent<BoxCollider2D>();
 
         if (speed <= 0.0f)
             speed = 5.0f;
@@ -61,13 +66,17 @@ public class Walker : MonoBehaviour
         health--;
         if(health <= 0)
         {
+
+            playSound(deathSFX);
+            boxCollider.enabled = false;
             anim.SetBool("Death", true);
             rb.velocity = Vector2.zero;
         }
     }
     public void isHeadShot()
     {
-       
+        playSound(splatSFX);
+        boxCollider.enabled = false;
         anim.SetBool("HeadShot", true);
         //rb.velocity = Vector2.zero;
     }
@@ -76,4 +85,23 @@ public class Walker : MonoBehaviour
         GameManager.instance.score = GameManager.instance.score + 10;
         Destroy(this.gameObject);
     }
+    private void OnDestroy()
+    {
+        GameManager.instance.walkerCounter = GameManager.instance.walkerCounter - 1;
+
+    }
+    public void playSound(AudioClip someSound)
+    {
+
+        if (!audio)
+        {
+            audio = this.gameObject.AddComponent<AudioSource>();
+            audio.clip = someSound;
+            audio.loop = false;
+            audio.Play();
+        }
+        else
+            audio.Play();
+    }
+
 }

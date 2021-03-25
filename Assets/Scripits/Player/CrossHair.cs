@@ -5,7 +5,7 @@ using UnityEngine;
 public class CrossHair : MonoBehaviour
 {
     public GameObject cross_Hairs;
-    Vector2 mouse_Pos;
+   public Vector2 mouse_Pos;
     // Update is called once per frame
     void Update()
     {

@@ -4,11 +4,18 @@ using UnityEngine;
 
 public class Shotgun : MonoBehaviour
 {
+    public Fire fire;
+
+    private void Start()
+    {
+        fire = GameObject.FindObjectOfType<Fire>();
+    }
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.tag == "Player" || (collision.gameObject.tag == "Projectile"))
         {
-
+            fire.scatterShoot = true;
             Destroy(this.gameObject);
         }
     }

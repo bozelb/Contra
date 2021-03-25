@@ -10,11 +10,17 @@ public class PlayerMove : MonoBehaviour
     Rigidbody2D rb;
     Animator anim;
     SpriteRenderer playerSprite;
+    AudioSource jumpAudio;
+     CrossHair crosshair;
+
+
     public float speed;
     public int jumpForce;
     public bool isGrounded;
     public LayerMask isGroundLayer;
     public Transform groundCheck;
+    public GameObject target;
+    public Transform targetPos;
     public float groundCheckRadius;
     private bool isShooting;
     private bool isUp;
@@ -24,37 +30,23 @@ public class PlayerMove : MonoBehaviour
     public Fire fire;
     int _score = 0;
     public GameManager game;
- 
-    /*
-    public int maxLives = 3;
-    int _lives = 3;
-    public int lives
-    {
-        get { return _lives; }
-        set
-        {
-            _lives = value;
-            if (_lives > maxLives)
-                _lives = maxLives;
-        }
-    }
-    public void subtract_Lives()
-    {
 
-       _lives =  _lives - 1;
-        Debug.Log("Current lives are " + _lives);
 
-    }
-    */
+
+    public AudioClip jumpSFX;
     // Start is called before the first frame update
     void Start()
     {
         fire = GameObject.FindObjectOfType<Fire>();
         game = GameObject.FindObjectOfType<GameManager>();
+        target = GameObject.Find("CrossHair");
+
+         crosshair = target.GetComponent<CrossHair>();
 
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
         playerSprite = GetComponent<SpriteRenderer>();
+        
         if (speed <= 0)
         {
             speed = 5.0f;
@@ -83,11 +75,6 @@ public class PlayerMove : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        /* if (_lives <= 0)
-        {
-            game.Go_To_GameOver();
-            Debug.Log("Current lives are " + _lives);
-        }*/
         float horizontalInput = Input.GetAxis("Horizontal");
         anim.SetFloat("speed", Mathf.Abs(horizontalInput));
         anim.SetBool("isGrounded", isGrounded);
@@ -96,11 +83,20 @@ public class PlayerMove : MonoBehaviour
         {
             rb.velocity = Vector2.zero;
             rb.AddForce(Vector2.up * jumpForce);
-           
+            if (!jumpAudio)
+            {
+                jumpAudio = this.gameObject.AddComponent<AudioSource>();
+                jumpAudio.clip = jumpSFX;
+                jumpAudio.loop = false;
+                jumpAudio.Play();
+            }
+            else
+                jumpAudio.Play();
         }
         rb.velocity = new Vector2(horizontalInput * speed, rb.velocity.y);
 
         //Flip Animation, 
+        //The target in reference to the player is nega
         if (playerSprite.flipX && horizontalInput > 0 || !playerSprite.flipX && horizontalInput < 0)
         {
 
@@ -124,14 +120,14 @@ public class PlayerMove : MonoBehaviour
 
         }
         //Shooting Up,
-        if(Input.GetKeyDown(KeyCode.W) && Input.GetKeyDown(KeyCode.UpArrow) && isGrounded)
+        if(crosshair.mouse_Pos.y > 0.5f && isGrounded)
         {
 
             isUp = true;
             anim.SetBool("IsUp", isUp);
 
         }
-        if (Input.GetKeyUp(KeyCode.W) || Input.GetKeyUp(KeyCode.UpArrow) && isGrounded)
+         /*if (target.position.y < 1.5f && isGrounded && isShooting == true)
         {
 
             isUp = false;
@@ -139,20 +135,20 @@ public class PlayerMove : MonoBehaviour
 
         }
         // Is shooting down, 
-        if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow) && isGrounded)
+        if (target.position.y < -1.5f && isGrounded && isShooting == true)
         {
 
             isDown = true;
             anim.SetBool("IsDown", isDown);
 
         }
-        if (Input.GetKeyUp(KeyCode.S) || Input.GetKeyUp(KeyCode.DownArrow) && isGrounded)
+        if (target.position.y > -1.5f && isGrounded && isShooting == true)
         {
 
             isDown = false;
             anim.SetBool("IsDown", isDown);
 
-        }
+        }*/
        
     }
 
