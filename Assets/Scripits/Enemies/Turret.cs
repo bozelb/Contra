@@ -63,7 +63,7 @@ public class Turret : MonoBehaviour
             inDistance = true;
         else
             inDistance = false;
-
+        
         //Is in distance? Then shoot & trigger rotation of turret
         if (inDistance == true)
         {
@@ -97,6 +97,7 @@ public class Turret : MonoBehaviour
     public void finishDeath()
     {
         GameManager.instance.score = GameManager.instance.score + 10;
+        GameManager.instance.turretCounter = GameManager.instance.turretCounter - 1;
         Destroy(this.gameObject);
     }
     //Rotating function for turret, called when in distance is true
@@ -146,7 +147,7 @@ public class Turret : MonoBehaviour
 
     private void OnDestroy()
     {
-        GameManager.instance.turretCounter = GameManager.instance.turretCounter - 1;
+        
      
     }
 

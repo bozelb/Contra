@@ -15,6 +15,7 @@ TagManager:
   - TurretRaduis
   - Direction
   - Death
+  - SecertEnding
   layers:
   - Default
   - TransparentFX

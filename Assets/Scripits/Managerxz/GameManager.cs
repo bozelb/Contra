@@ -42,12 +42,12 @@ public class GameManager : MonoBehaviour
 
 
             _turretCounter = value;
-          /*   if (_turretCounter == 0)
+            if (_turretCounter == 0)
        {
            Cursor.visible = true;
            SceneManager.LoadScene("GameComplete");
        
-        }*/
+        }
       }
     }
     int _walkerCounter;
@@ -197,9 +197,10 @@ public void Respawn()
         playerInstance.transform.position = currentLevel.starting_Position.position;
     }
 
-    public void AddLife()
+    public void secretEnding()
     {
-        
+        Cursor.visible = true;
+        SceneManager.LoadScene("Ending2");
     }
 }
  

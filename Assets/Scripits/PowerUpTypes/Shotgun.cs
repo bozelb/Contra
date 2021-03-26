@@ -13,7 +13,7 @@ public class Shotgun : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.tag == "Player" || (collision.gameObject.tag == "Projectile"))
+        if (collision.gameObject.tag == "Player")
         {
             fire.scatterShoot = true;
             Destroy(this.gameObject);

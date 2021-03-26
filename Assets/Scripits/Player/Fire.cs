@@ -8,6 +8,8 @@ public class Fire : MonoBehaviour
     //Transform for spawn points and unit vectors for projectile
     [Header("Transform")]
     public Transform spawnRight;
+    public Transform spawnLeft;
+    public Transform spawn;
     public Transform target;
 
     //Timer for how long powerups will stay
@@ -26,7 +28,7 @@ public class Fire : MonoBehaviour
     public bool machineGunPower = false;
     bool cannotShoot = false;
     bool defaultShoot = true;
-   public bool scatterShoot = false;
+       public bool scatterShoot = false;
 
     //Audio
     [Header("Audio")]
@@ -86,7 +88,7 @@ public class Fire : MonoBehaviour
         if (Input.GetButtonDown("Fire1"))
         {
             playShootSound();
-            Projectile projectileInstance = Instantiate(projectilePrefab, spawnRight.position, spawnRight.rotation);
+            Projectile projectileInstance = Instantiate(projectilePrefab, spawn.position, spawn.rotation);
             projectileInstance.speed = projectileSpeed;
         }
 
@@ -105,7 +107,7 @@ public class Fire : MonoBehaviour
                 playShootSound();
                 cannotShoot = true;
                 StartCoroutine(ShootDelay());
-                Projectile projectileInstance = Instantiate(projectilePrefab, spawnRight.position, spawnRight.rotation);
+                Projectile projectileInstance = Instantiate(projectilePrefab, spawn.position, spawn.rotation);
                 projectileInstance.speed = projectileSpeed;
             }
            
@@ -122,6 +124,7 @@ public class Fire : MonoBehaviour
     {
         yield return new WaitForSeconds(5);
         machineGunPower = false;
+        scatterShoot = false;
         defaultShoot = true;
     }
 
@@ -144,10 +147,21 @@ public class Fire : MonoBehaviour
 
             //Get unit vector
             Vector2 scatter2 = target - (Vector2)transform.position;
-            scatter2.y = scatter2.y - 0.35f;
+            scatter2.y = scatter2.y + 0.35f;
             scatter2.Normalize();
             projectilePrefab.projectileVector = scatter2;
            //Find two angles,
+
+            //Create projectile,
+            projectileInstance = Instantiate(projectilePrefab, spawnRight.position, spawnRight.rotation);
+            projectileInstance.speed = projectileSpeed;
+
+            //Get unit vector
+            Vector2 scatter3 = target - (Vector2)transform.position;
+            scatter3.y = scatter3.y - 0.35f;
+            scatter3.Normalize();
+            projectilePrefab.projectileVector = scatter3;
+            //Find two angles,
 
             //Create projectile,
             projectileInstance = Instantiate(projectilePrefab, spawnRight.position, spawnRight.rotation);

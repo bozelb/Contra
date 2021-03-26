@@ -11,11 +11,11 @@ public class PlayerMove : MonoBehaviour
     Animator anim;
     SpriteRenderer playerSprite;
     AudioSource jumpAudio;
-     CrossHair crosshair;
+    
 
 
     public float speed;
-    public int jumpForce;
+    public int jumpForce = 250;
     public bool isGrounded;
     public LayerMask isGroundLayer;
     public Transform groundCheck;
@@ -25,23 +25,21 @@ public class PlayerMove : MonoBehaviour
     private bool isShooting;
     private bool isUp;
     private bool isDown;
-    private bool isRight = true;
     public PowerUp powerUp;
     public Fire fire;
-    int _score = 0;
     public GameManager game;
-
-
-
+     public Transform crosshair;
+    Vector2 test;
     public AudioClip jumpSFX;
     // Start is called before the first frame update
     void Start()
     {
+
+        
+
         fire = GameObject.FindObjectOfType<Fire>();
         game = GameObject.FindObjectOfType<GameManager>();
-        target = GameObject.Find("CrossHair");
-
-         crosshair = target.GetComponent<CrossHair>();
+        crosshair = GameObject.FindObjectOfType<CrossHair>().transform;
 
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
@@ -75,6 +73,12 @@ public class PlayerMove : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        ///Vector of mouse and vector of player
+
+
+
+        Debug.Log(test.x);
+
         float horizontalInput = Input.GetAxis("Horizontal");
         anim.SetFloat("speed", Mathf.Abs(horizontalInput));
         anim.SetBool("isGrounded", isGrounded);
@@ -97,14 +101,27 @@ public class PlayerMove : MonoBehaviour
 
         //Flip Animation, 
         //The target in reference to the player is nega
-        if (playerSprite.flipX && horizontalInput > 0 || !playerSprite.flipX && horizontalInput < 0)
+        /*if (playerSprite.flipX && horizontalInput > 0 || !playerSprite.flipX && horizontalInput < 0)
         {
 
             playerSprite.flipX = !playerSprite.flipX;
 
 
 
+        }*/
+        if (crosshair.position.x < transform.position.x)
+        {
+            playerSprite.flipX = true;
+            fire.spawn = fire.spawnLeft;
         }
+        if (crosshair.position.x > transform.position.x)
+        {
+            playerSprite.flipX = false;
+            fire.spawn = fire.spawnRight;
+        }
+
+
+
         //Shooting animation,
         if (Input.GetButtonDown("Fire1") && isGrounded)
         {
@@ -112,7 +129,7 @@ public class PlayerMove : MonoBehaviour
             anim.SetBool("isShooting", isShooting);
 
         }
-        if(Input.GetButtonUp("Fire1") && isGrounded)
+        if (Input.GetButtonUp("Fire1") && isGrounded)
         {
 
             isShooting = false;
@@ -120,38 +137,36 @@ public class PlayerMove : MonoBehaviour
 
         }
         //Shooting Up,
-        if(crosshair.mouse_Pos.y > 0.5f && isGrounded)
-        {
+        /* if(crosshair.position.y > 2.2f && isGrounded)
+         {
 
-            isUp = true;
-            anim.SetBool("IsUp", isUp);
+             isUp = true;
+             anim.SetBool("IsUp", isUp);
 
-        }
-         /*if (target.position.y < 1.5f && isGrounded && isShooting == true)
-        {
+         }
+         else
+         {
 
-            isUp = false;
-            anim.SetBool("IsUp", isUp);
+             isUp = false;
+             anim.SetBool("IsUp", isUp);
 
-        }
-        // Is shooting down, 
-        if (target.position.y < -1.5f && isGrounded && isShooting == true)
-        {
+         }
+         // Is shooting down, 
+         if (crosshair.position.y < 0.5f && isGrounded)
+         {
 
-            isDown = true;
-            anim.SetBool("IsDown", isDown);
+             isDown = true;
+             anim.SetBool("IsDown", isDown);
 
-        }
-        if (target.position.y > -1.5f && isGrounded && isShooting == true)
-        {
+         }
 
-            isDown = false;
-            anim.SetBool("IsDown", isDown);
-
-        }*/
-       
+     }*/
+        /* public void animDecide(Vector2 target)
+         {
+             Vector2 direction = target - (Vector2)transform.position;
+             direction.Normalize();
+             test = direction;
+         }
+        */
     }
-
-   
-
 }
